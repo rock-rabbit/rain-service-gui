@@ -9,6 +9,7 @@ import (
 func makeUI() (*widget.Label, *widget.Entry) {
 	out := widget.NewLabel("Hello world! 中文测试")
 	in := widget.NewEntry()
+	in.SetPlaceHolder("请输入...")
 
 	in.OnChanged = func(content string) {
 		out.SetText("Hello " + content + "!")

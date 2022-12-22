@@ -1,0 +1,8 @@
+Website = "https://www.68wu.cn"
+
+[Details]
+  Icon = "icons/darwin/Icon-MacOS-512x512@2x.png"
+  Name = "rain"
+  ID = "com.rockrabbit.rain"
+  Version = "1.0.0"
+  Build = 2
