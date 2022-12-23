@@ -25,7 +25,7 @@ var mycolors = map[fyne.ThemeColorName]color.Color{
 	// 背景色
 	theme.ColorNameBackground: HexToNRGBA("#eee"),
 	// 按钮色
-	theme.ColorNameButton: HexToNRGBA("#000"),
+	theme.ColorNameButton: HexToNRGBA("#00000033"),
 	// 禁用前景色
 	theme.ColorNameDisabled: HexToNRGBA("#00000042"),
 	// 禁用按钮色
@@ -58,13 +58,14 @@ var mycolors = map[fyne.ThemeColorName]color.Color{
 var _ fyne.Theme = (*myTheme)(nil)
 
 func (t myTheme) Color(n fyne.ThemeColorName, v fyne.ThemeVariant) color.Color {
-	colors := mycolors
+	// colors := mycolors
 
-	if c, ok := colors[n]; ok {
-		return c
-	}
+	// if c, ok := colors[n]; ok {
+	// 	return c
+	// }
 
-	return color.Transparent
+	// return color.Transparent
+	return theme.DefaultTheme().Color(n, v)
 }
 
 func (m myTheme) Icon(name fyne.ThemeIconName) fyne.Resource {
