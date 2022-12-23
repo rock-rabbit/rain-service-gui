@@ -2,6 +2,7 @@ package main
 
 import (
 	"image/color"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -58,4 +59,9 @@ func IsInt(s []int, i int) bool {
 		}
 	}
 	return false
+}
+
+func GetFilename(v string) string {
+	_, t := filepath.Split(v)
+	return t
 }
