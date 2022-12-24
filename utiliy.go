@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
+	"os"
+	"path"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -61,7 +65,42 @@ func IsInt(s []int, i int) bool {
 	return false
 }
 
+// GetFilename 获取文件名
 func GetFilename(v string) string {
 	_, t := filepath.Split(v)
+	if len(t) > 26 {
+		t = fmt.Sprintf("%s...%s", t[:16], t[len(t)-10:])
+	}
 	return t
+}
+
+// GetDownloadsDir 获取系统默认下载地址
+func GetDownloadsDir() string {
+	if runtime.GOOS == "windows" {
+		return path.Join(os.Getenv("HOMEPATH"), "Downloads")
+	}
+	return path.Join(os.Getenv("HOME"), "Downloads")
+}
+
+// GetLogsDir
+func GetLogsDir() string {
+	if runtime.GOOS == "windows" {
+		return GetExecutable()
+	}
+	return GetExecutable()
+}
+
+// GetExecutable 获取执行文件目录
+func GetExecutable() string {
+	p, err := os.Executable()
+	if err != nil {
+		p, _ = filepath.Abs(filepath.Dir(os.Args[0]))
+		return p
+	}
+	return filepath.Dir(p)
+}
+
+func FileNotExist(dir string) bool {
+	_, err := os.Stat(dir)
+	return os.IsNotExist(err)
 }

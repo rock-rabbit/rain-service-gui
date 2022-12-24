@@ -113,6 +113,22 @@ func (rs *RainService) Start(uuid string) (*Row, error) {
 	return &v.Result, nil
 }
 
+func (rs *RainService) Delete(uuid string) (*Row, error) {
+	var v struct {
+		Error  string `json:"error"`
+		Result Row    `json:"result"`
+		ID     int    `json:"id"`
+	}
+	err := rs.Send("Service.Delete", &v, uuid)
+	if err != nil {
+		return nil, err
+	}
+	if v.Error != "" {
+		return nil, errors.New(v.Error)
+	}
+	return &v.Result, nil
+}
+
 func (rs *RainService) Pause(uuid string) (*Row, error) {
 	var v struct {
 		Error  string `json:"error"`

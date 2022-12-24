@@ -45,17 +45,16 @@ func NewDownloadList() *DownloadList {
 		hbox := container.NewHBox()
 		progress := NewMyProgress()
 		progress.SetValue(50)
-		progress.TextFormatter = func() string {
-			return "100%"
-		}
 		ctl := widget.NewButtonWithIcon("", theme.DeleteIcon(), func() {})
 		status := NewDownloadTitle("下载中", 50)
 
-		hbox.Add(NewDownloadTitle("title....", 300))
+		hbox.Add(NewDownloadTitle("title....", 250))
 		hbox.Add(progress)
 		hbox.Add(status)
+		hbox.Add(NewDownloadTitle("title....", 50))
 		hbox.Add(layout.NewSpacer())
 		hbox.Add(ctl)
+		hbox.Add(widget.NewButtonWithIcon("删除", theme.DeleteIcon(), func() {}))
 
 		ctl.SetIcon(theme.DeleteIcon())
 		ctl.SetIcon(theme.MediaPlayIcon())
@@ -70,19 +69,6 @@ func NewDownloadList() *DownloadList {
 		objs := o.(*fyne.Container).Objects
 		objs[0].(*DownloadTitle).SetText(data.Title)
 		objs[1].(*MyProgress).SetValue(data.Progess)
-		objs[1].(*MyProgress).TextFormatter = func() string {
-			if data.Status == "finish" || data.Status == "error" {
-				return fmt.Sprintf(
-					"%d%%",
-					int(data.Progess),
-				)
-			}
-			return fmt.Sprintf(
-				"%d%%\t\t%s/s",
-				int(data.Progess),
-				FormatFileSize(data.DownloadSpeed),
-			)
-		}
 		objs[2].(*DownloadTitle).SetText(StatusToChinese(data.Status))
 		ctlIcon := theme.DeleteIcon()
 		ctlText := "删除"
@@ -95,16 +81,28 @@ func NewDownloadList() *DownloadList {
 			ctlText = "继续"
 		case "finish":
 			ctlIcon = theme.ViewRefreshIcon()
-			ctlText = "重试"
+			ctlText = "重下"
 		case "error":
 			ctlIcon = theme.ViewRefreshIcon()
 			ctlText = "重试"
 		}
-		objs[4].(*widget.Button).SetIcon(ctlIcon)
-		objs[4].(*widget.Button).SetText(ctlText)
-		objs[4].(*widget.Button).OnTapped = func() {
+		objs[3].(*DownloadTitle).SetText(fmt.Sprintf("%s/s", FormatFileSize(data.DownloadSpeed)))
+
+		objs[5].(*widget.Button).SetIcon(ctlIcon)
+		objs[5].(*widget.Button).SetText(ctlText)
+		objs[5].(*widget.Button).OnTapped = func() {
 			data.Click(ctlText)
 		}
+
+		objs[6].(*widget.Button).OnTapped = func() {
+			data.Click("删除")
+		}
+		if data.Status == "running" {
+			objs[6].(*widget.Button).Disable()
+		} else {
+			objs[6].(*widget.Button).Enable()
+		}
+
 	}
 	dl.ExtendBaseWidget(dl)
 	return dl

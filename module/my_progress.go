@@ -18,5 +18,5 @@ func NewMyProgress() *MyProgress {
 }
 
 func (mp *MyProgress) MinSize() fyne.Size {
-	return fyne.Size{Width: 400, Height: 0}
+	return fyne.Size{Width: 300, Height: 0}
 }

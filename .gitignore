@@ -7,7 +7,10 @@
 # 测试文件
 tmp
 *.db
+*.json
+*.log
 
 # 编译
 out
 *.app
+./rain-service.exe
